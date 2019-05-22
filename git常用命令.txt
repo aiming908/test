@@ -1,0 +1,196 @@
+                                             git 常用命令
+安装好git
+cd 目录 :切换到需要管理的目录
+mkdir xx:创建一个空目录
+pwd  : 显示当前目录的路径
+git init :初始化目录
+git add 文件名:添加文件
+git status :查看当前目录状态
+git commit -m '说明内容':提交版本并说明
+git add 文件名;修改文件
+git log:查看提交日志
+git reset --hard HEAD^:恢复到上一个版本
+git reset --soft  只改变提交点，暂存区和工作目录的内容都不改变
+git reset --mixed 改变提交点，同时暂时改变暂存区的内容
+git reset --hard 版本号码:直接恢复到某个版本
+git reflog:显示git的所有版本操作
+git checkout -- 文件名: 恢复到暂存区最新的状态
+git reset HEAD 文件名:将暂存区的文件恢复到最近一次提交
+git checkout -- 文件名: 恢复到暂存区最新的状态（比如想放弃一个文件的修改）
+rm 文件名:删除文件
+ssh-keygen -t rsa -C 'alexaddjiang@gmail.com':创建key,用于连接gitHub账号
+下一步:把上个命令生成出来的id_rsa.pub的内容添加到github中的ssh keys中
+下一步:在github中创建目录
+git remote add origin git@github.com:zsping1989/目录名.git
+git push -u origin master:推送代码到github(第一次提交加上-u)
+git push origin master:推送代码
+git clone git@github.com:zsping1989/目录名.git
+git branch dev 创建分支
+git checkout dev 切换到dev分支
+git checkout -b dev 创建并切换到分支
+git branch 查看当前分支
+git checkout master:切换回主分支
+git merge dev:将dev分支合并到当前分支
+git branch -d dev:删除dev分支
+git log --graph --pretty=oneline --abbrev-commit:查看分支变化
+git log --graph:查看分支合并图
+git merge --on-ff -m '备注信息' dev;禁用Fast forward模式合并
+git stash:在当前分支保存工作目录
+git stash list:查看保存的工作目录
+git stash apply:恢复刚刚保存的工作目录
+git stash drop:删除刚刚保存的工作目录
+git stash pop:恢复时同时删除刚刚保存的工作目录
+git branch -D 分支名:分支不合并强行删除分支
+git remote:查看远程库信息
+git remote -v:查看远程库详细信息
+git checkout -b dev origin/dev:创建分支并同步到远程服务器
+git pull:当远程同步冲突时,更新远程代码到本地解决冲突
+git branch --set-upstream dev origin/dev:将本地的分支dev指定为远程的分支dev
+git tag v1.0:切换到对应的分支上,打上标签
+git tag:查看所有标签
+git tag 标签名 提交id:在对应的那次提交上打标签
+git show 标签名:查看标签的详细信息
+git tag -d 标签名:删除标签
+git push origin 标签名:推送标签名到远程
+git push origin --tags:推送全部标签名到远程
+git tag -d 标签名:删除远程标签(第一步)
+git push origin :refs/tags/标签名:删除远程标签(第一二步)
+.gitignore文件:配置git忽略文件(文件写入文件名或*.后缀名)
+git config --global alias.st status:设置命令status的别名为st
+git config --global alias.lg "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
+别名配置
+linux安装git
+sudo apt-get install git:安装git
+sudo adduser git:创建用户运行git
+收集所有需要登录的用户的公钥，就是他们自己的id_rsa.pub文件，把所有公钥导入到/home/git/.ssh/authorized_keys文件里，一行一个。:创建证书登录
+sudo git init -bare 文件名.git:初始化仓库
+详细流程
+配置本机git的用户名和邮箱 | config
+在刚刚在本机安装完git后，需要配置的信息。
+git config --global user.name"shahdza"
+git config --global user.email250411887@qq.com
+初始化git仓库 | init
+# 创建文件夹，并进入 Demo 目录
+mkdirDemo
+cdDemo
+# 初始化git仓库（将 Demo 文件夹变成git仓库）
+git init
+添加并提交 | add、commit
+都是在本地的git仓库进行操作，不会改动远程仓库的版本。
+# 添加文件到仓库（放在暂存区）
+git addreadme.txt
+git add *
+# 提交添加到暂存区的文件到仓库
+git commit -m "提交信息"
+克隆仓库 | clone
+# 克隆远程仓库到本地仓库
+git clonehttps://github.com/shahdza/Demo.git
+# 克隆本地仓库到本地另一个路径
+git clone/localpath
+远程推送 | remote、push
+# 将本地仓库与一个远程库关联
+git remote add originhttps://github.com/shahdza/Demo.git
+# 第一次推送master分支的所有内容
+git push -u origin master
+# 推送最新修改内容到master分支（也可以推送其它分支）
+git push origin master
+查看提交信息 | status、diff、log、reflog
+# 查看仓库当前状态
+git status
+# 查看文件被修改过的内容（在还未commit时，工作区和本地git仓库的差异）
+git diffreadme.txt
+# 查看从最近到最远的提交历史
+## 注意：比如有100个版本，通过reset回退到了第50个版本，那么log只会显示1~50的提交日志
+## 会显示版本号、提交日期、提交信息
+git log
+git log --pretty=oneline
+# 查看操作命令的历史（记录了每一次的操作命令）
+git reflog
+版本回退 | reset --hard
+# 上一个版本、上上个版本、往上100个版本
+git reset --hard HEAD^
+git reset --hard HEAD^^
+git reset --hard HEAD~100
+# 回退到指定版本（通过版本号）
+git reset --hard3628164
+丢弃工作区的修改 | checkout --
+# 一种是readme.txt自修改后还没有被放到暂存区，现在，撤销修改就回到和版本库一模一样的状态；
+# 一种是readme.txt已经添加到暂存区后，又作了修改，现在，撤销修改就回到添加到暂存区后的状态。
+# 总之，就是让这个文件回到最近一次[git commit]或[git add]时的状态。
+git checkout --readme.txt
+撤销暂存区的修改（unstage），重新放回工作区 | reset HEAD
+# 执行后，暂存区是干净的，工作区有修改
+git reset HEADreadme.txt
+删除仓库中的某个文件（工作区文件也会删除） | rm
+# 删除文件会放入暂存区，可以使用[git reset HEAD file]和[git checkout -- file]撤销删除
+git rmreadme.txt
+分支管理 | branch
+# 创建分支他
+git branch
+# 切换分支
+git checkout
+# 创建+切换分支
+git checkout -b
+# 合并某分支到当前分支
+git merge
+
+# 解决冲突工具
+git mergetool
+# 删除分支
+git branch -d
+# 强行删除
+git branch -D
+# 查看分支
+git branch
+# 查看分支合并图
+git branch -r
+# 查看所有分支
+git log --graph --pretty=oneline
+标签管理 | tag
+# 给分支打上标签
+## 当前版本打上标签
+git tagv1.0
+## 某个版本打上标签
+git tagv0.9 6224937
+# 推送标签到远程仓库
+## 推送某个标签
+git push origin
+## 推送所有标签
+git push origin --tag
+# 删除标签
+git tag -dv0.1
+# 删除远程标签
+## 需要先本地删除，然后再远程删除
+git tag -dv0.9
+git push origin :refs/tags/v0.9
+# 查看所有标签
+git tag
+# 查看某个标签信息
+git show
+忽略特殊文件 | .gitignore
+1、在 Git工作区的根目录创建一个特殊的.gitignore文件。
+2、在.gitignore文件中，添加需要忽略的文件。
+3、特殊文件大全：https://github.com/github/gitignore
+多人协作
+master分支：用于管理正式版本。
+dev分支：用于管理正在开发版本。
+bob分支：bob自己创建的分支，bob在这个分支下工作，然后合并到dev分支上。
+michael分支：michael自己创建的分支，在这个分支下工作，然后合并到dev分支上。
+
+# 抓取分支
+## 从远程库clone时，默认情况下，只能看到本地的master分支。
+git clonehttps://github.com/shahdza/Demo.git
+# 在本地创建和远程分支对应的dev分支
+git checkout -b dev origin/dev
+# 建立本地dev分支和远程dev分支的关联
+git branch --set-upstream dev origin/dev
+# 更新分支
+## 当小伙伴已经向origin/dev分支推送了他的提交。
+## 而碰巧你也对同样的文件作了修改，并试图推送。
+## 推送失败，因为小伙伴的最新提交和你试图推送的提交有冲突
+## 需要把最新的提交从origin/dev抓下来
+## 然后，在本地合并，解决冲突，再推送
+git pull
+access denied报错  git config --system --unset credential.helper
+针对新旧项目的操作：
+

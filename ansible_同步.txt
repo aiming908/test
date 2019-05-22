@@ -1,0 +1,21 @@
+
+
+ansible all -m synchronize -a 'src=/usr/local/nginx/conf/3983/ dest=/usr/local/nginx/conf/3983 compress=yes' 
+ansible all -m synchronize -a 'src=/usr/local/nginx/conf/9170/ dest=/usr/local/nginx/conf/9170 compress=yes' 
+ansible all -m synchronize -a 'src=/usr/local/nginx/conf/6372/ dest=/usr/local/nginx/conf/6372 compress=yes' 
+ansible all -m synchronize -a 'src=/usr/local/nginx/conf/2741/ dest=/usr/local/nginx/conf/2741 compress=yes' 
+ansible all -m synchronize -a 'src=/usr/local/nginx/conf/crt/ dest=/usr/local/nginx/conf/crt compress=yes' 
+ansible proxy-servers -m 'shell' -a '/usr/local/nginx/sbin/nginx -s reload'
+
+#在对应行数添加
+sed '28 aproxy_set_header X-Real-IP $remote_addr;' -i 27410{2..5}.conf 
+sed '30 aproxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;' -i *.conf 
+#在数据开头添加#号注释
+sed 's/^proxy_set_header X-Real-IP $remote_addr;/#&/' -i *.conf 
+sed 's/^proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;/#&/' -i *.conf 
+
+
+sed 's/^#proxy_set_header X-Real-IP $remote_addr;/proxy_set_header X-Real-IP $remote_addr;/' -i 398315{1..5}.com.conf 
+sed 's/^#proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;/proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;/' -i 398315{1..5}.com.conf 
+
+sed 's/185.109.19.245/185.109.19.221/' -i 2741{2..5}.com.conf 
